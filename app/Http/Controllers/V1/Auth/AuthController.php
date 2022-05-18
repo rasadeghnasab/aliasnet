@@ -15,7 +15,7 @@ class AuthController extends Controller
                 'success' => false,
                 'code' => 401,
                 'token' => '',
-            ]);
+            ])->setStatusCode(401);
         }
 
         return response([
@@ -27,6 +27,6 @@ class AuthController extends Controller
 
     private function attempt(string $username, string $password): bool
     {
-        return $username === '' && $password === 'somerandompassword!!123';
+        return strtolower($username) === 'username' && $password === 'somerandompassword!!123';
     }
 }

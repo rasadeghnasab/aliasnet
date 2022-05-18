@@ -26,7 +26,7 @@ class AuthControllerTest extends TestCase
     {
         $response = $this->json('post', 'api/v1/getToken', $data);
 
-        $this->assertEquals($statusCode, $response->getStatusCode());
+        $response->assertStatus($statusCode);
     }
 
     /**
@@ -65,7 +65,7 @@ class AuthControllerTest extends TestCase
                     'Username' => 'myUsername',
                     'Password' => 'password',
                 ],
-                'statusCode' => 200,
+                'statusCode' => 401,
             ],
         ];
     }
@@ -75,8 +75,8 @@ class AuthControllerTest extends TestCase
         return [
             [
                 'data' => [
-                    'Username' => 'valid_username',
-                    'Password' => 'valid_password',
+                    'Username' => 'Username',
+                    'Password' => 'somerandompassword!!123',
                 ],
             ],
         ];

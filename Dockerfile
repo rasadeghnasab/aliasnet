@@ -15,21 +15,14 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-COPY . /var/www/html/project
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN docker-php-ext-install pdo mbstring
 
-# Arguments defined in docker-compose.yml
-ARG user=ramin
-ARG uid=1000
+WORKDIR /app
+COPY . /app
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN composer install
 
-# Set working directory
-WORKDIR /var/www/html/project
+CMD php artisan serve --host=0.0.0.0 --port=8000
 
-RUN chown -R www-data:www-data ./
-
-USER $user
-
-CMD ["php", "artisan", "serve", "--port=8080"]
-
-EXPOSE 8080
+EXPOSE 8000
