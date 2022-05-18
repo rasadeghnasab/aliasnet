@@ -10,21 +10,19 @@ class AuthController extends Controller
 {
     public function getToken(GetTokenRequest $request)
     {
-        $response = [
-            "success" => true,
-            "code" => 200,
-            "token" => Str::random(),
-        ];
-
         if (!$this->attempt($request->get('Username'), $request->get('Password'))) {
-            $response = [
+            return response([
                 'success' => false,
                 'code' => 401,
                 'token' => '',
-            ];
+            ]);
         }
 
-        return response($response);
+        return response([
+            "success" => true,
+            "code" => 200,
+            "token" => Str::random(),
+        ]);
     }
 
     private function attempt(string $username, string $password): bool
